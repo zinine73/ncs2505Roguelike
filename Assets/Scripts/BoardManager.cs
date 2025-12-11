@@ -6,6 +6,7 @@ public class BoardManager : MonoBehaviour
     public class CellData
     {
         public bool Passable;
+        public GameObject ContainedObject;
     }
 
     public int Width;
