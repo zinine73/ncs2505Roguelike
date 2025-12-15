@@ -51,9 +51,15 @@ public class PlayerController : MonoBehaviour
             if (cellData != null && cellData.Passable)
             {
                 GameManager.Instance.TurnManager.Tick();
-                MoveTo(newCellTarget);
-
-                cellData.ContainedObject?.PlayerEntered();
+                if (cellData.ContainedObject == null)
+                {
+                    MoveTo(newCellTarget);
+                }
+                else if (cellData.ContainedObject.PlayerWantsToEnter())
+                {
+                    MoveTo(newCellTarget);
+                    cellData.ContainedObject.PlayerEntered();
+                }
             }
         }
     }
