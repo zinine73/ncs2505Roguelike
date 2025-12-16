@@ -20,6 +20,7 @@ public class BoardManager : MonoBehaviour
     public PlayerController Player;
     public FoodObject FoodPrefab;
     public WallObject WallPrefab;
+    public ExitObject ExitPrefab;
     public Sprite[] FoodSprite;
     public int MinFood = 2;
     [Tooltip("음식 최대 수(포함)")]
@@ -58,8 +59,32 @@ public class BoardManager : MonoBehaviour
             }
         }
         emptyCellList.Remove(new Vector2Int(1, 1));
+
+        // Exit
+        Vector2Int endCoord = new Vector2Int(Width - 2, Height - 2);
+        AddObject(Instantiate(ExitPrefab), endCoord);
+        emptyCellList.Remove(endCoord);
+
         GenerateWall();
         GenerateFood();
+    }
+
+    public void Clean()
+    {
+        if (boardData == null) return;
+
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                var CellData = boardData[x, y];
+                if (CellData.ContainedObject != null)
+                {
+                    Destroy(CellData.ContainedObject.gameObject);
+                }
+                SetCellTile(new Vector2Int(x, y), null);
+            }
+        }    
     }
 
     Tile GetRandomTile(Tile[] tiles)
@@ -82,7 +107,7 @@ public class BoardManager : MonoBehaviour
         return boardData[cellIndex.x, cellIndex.y];
     }
 
-    public void SetCellType(Vector2Int cellIndex, Tile tile)
+    public void SetCellTile(Vector2Int cellIndex, Tile tile)
     {
         tilemap.SetTile(new Vector3Int(
             cellIndex.x, cellIndex.y, 0), tile);    

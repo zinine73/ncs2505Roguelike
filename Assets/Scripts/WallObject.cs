@@ -21,7 +21,7 @@ public class WallObject : CellObject
         // MaxWallType중에 랜덤하게 하나를 고른다
         wallType = Random.Range(0, MaxWallType);
         GameManager.Instance.BoardManager.
-            SetCellType(cell, ObstacleTile[wallType]);
+            SetCellTile(cell, ObstacleTile[wallType]);
     }
     public override bool PlayerWantsToEnter()
     {
@@ -33,12 +33,12 @@ public class WallObject : CellObject
                 // 바꿀 타일의 인덱스는 MaxWallType만큼 떨어져 있다
                 int change = wallType + MaxWallType;
                 GameManager.Instance.BoardManager.
-                    SetCellType(cell, ObstacleTile[change]);
+                    SetCellTile(cell, ObstacleTile[change]);
             }
             return false;
         }
         GameManager.Instance.BoardManager.
-            SetCellType(cell, originalTile);
+            SetCellTile(cell, originalTile);
         Destroy(gameObject);
         return true;
     }
