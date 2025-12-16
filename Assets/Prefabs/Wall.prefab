@@ -44,4 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f39363fcd7e894241ac525de481b7517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObstacleTile: {fileID: 11400000, guid: d1b17535ccdb39642ae9c6df684b0a90, type: 2}
+  MaxWallType: 3
+  ObstacleTile:
+  - {fileID: 11400000, guid: 2d4aea4b184e3194783695b19b1f33fa, type: 2}
+  - {fileID: 11400000, guid: fdd074a2891f7414ca37629d902d8068, type: 2}
+  - {fileID: 11400000, guid: d1b17535ccdb39642ae9c6df684b0a90, type: 2}
+  - {fileID: 11400000, guid: bbeb3ce80e5fc434c92126e6d6d4c89a, type: 2}
+  - {fileID: 11400000, guid: 256ad72d4458515479237ba5609fe7fc, type: 2}
+  - {fileID: 11400000, guid: 21bd47e301be8514aa588f37ad148416, type: 2}
+  MaxHealth: 3
