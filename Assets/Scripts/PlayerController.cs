@@ -5,7 +5,16 @@ public class PlayerController : MonoBehaviour
 {
     BoardManager board;
     Vector2Int cellPosition;
+    Vector3 moveTarget;
+    Animator anim;
     bool isGameOver;
+    bool isMoving;
+    float moveSpeed = 3.0f;
+
+    void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     public void Init()
     {
@@ -18,10 +27,20 @@ public class PlayerController : MonoBehaviour
         MoveTo(cell);
     }
 
-    public void MoveTo(Vector2Int cell)
+    public void MoveTo(Vector2Int cell, bool immediate = true)
     {
         cellPosition = cell;
-        transform.position = board.CellToWorld(cellPosition);
+        if (immediate)
+        {
+            isMoving = false;
+            transform.position = board.CellToWorld(cellPosition);
+        }
+        else
+        {
+            isMoving = true;
+            moveTarget = board.CellToWorld(cellPosition);
+        }
+        anim.SetBool("MOVING", isMoving);
     }
 
     public void GameOver()
@@ -64,6 +83,23 @@ public class PlayerController : MonoBehaviour
             hasMoved = true;
         }
 
+        if (isMoving)
+        {
+            transform.position = Vector3.MoveTowards(
+                transform.position, moveTarget, moveSpeed * Time.deltaTime);
+            if (transform.position == moveTarget)
+            {
+                isMoving = false;
+                anim.SetBool("MOVING", false);
+                var cellData = board.GetCellData(cellPosition);
+                if (cellData.ContainedObject != null)
+                {
+                    cellData.ContainedObject.PlayerEntered();
+                }
+            }
+            return;    
+        }
+
         if (hasMoved)
         {
             BoardManager.CellData cellData 
@@ -73,11 +109,11 @@ public class PlayerController : MonoBehaviour
                 GameManager.Instance.TurnManager.Tick();
                 if (cellData.ContainedObject == null)
                 {
-                    MoveTo(newCellTarget);
+                    MoveTo(newCellTarget, false);
                 }
                 else if (cellData.ContainedObject.PlayerWantsToEnter())
                 {
-                    MoveTo(newCellTarget);
+                    MoveTo(newCellTarget, false);
                     cellData.ContainedObject.PlayerEntered();
                 }
             }
