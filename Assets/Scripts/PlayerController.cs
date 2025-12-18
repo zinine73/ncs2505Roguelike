@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    readonly int hashMove = Animator.StringToHash("MOVING");
+    readonly int hashAttack = Animator.StringToHash("ATTACK");
     BoardManager board;
     Vector2Int cellPosition;
     Vector3 moveTarget;
@@ -40,7 +42,7 @@ public class PlayerController : MonoBehaviour
             isMoving = true;
             moveTarget = board.CellToWorld(cellPosition);
         }
-        anim.SetBool("MOVING", isMoving);
+        anim.SetBool(hashMove, isMoving);
     }
 
     public void GameOver()
@@ -90,7 +92,7 @@ public class PlayerController : MonoBehaviour
             if (transform.position == moveTarget)
             {
                 isMoving = false;
-                anim.SetBool("MOVING", false);
+                anim.SetBool(hashMove, false);
                 var cellData = board.GetCellData(cellPosition);
                 if (cellData.ContainedObject != null)
                 {
@@ -111,10 +113,17 @@ public class PlayerController : MonoBehaviour
                 {
                     MoveTo(newCellTarget, false);
                 }
-                else if (cellData.ContainedObject.PlayerWantsToEnter())
+                else
                 {
-                    MoveTo(newCellTarget, false);
-                    cellData.ContainedObject.PlayerEntered();
+                    if (cellData.ContainedObject.PlayerWantsToEnter())
+                    {
+                        MoveTo(newCellTarget, false);
+                        cellData.ContainedObject.PlayerEntered();
+                    }
+                    else
+                    {
+                        anim.SetTrigger(hashAttack);
+                    }
                 }
             }
         }
