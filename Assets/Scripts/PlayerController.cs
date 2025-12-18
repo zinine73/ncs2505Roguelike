@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     bool isMoving;
     float moveSpeed = 3.0f;
 
+    public Vector2Int Cell => cellPosition;
+    
     void Awake()
     {
         anim = GetComponent<Animator>();

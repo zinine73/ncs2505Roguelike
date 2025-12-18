@@ -21,6 +21,7 @@ public class BoardManager : MonoBehaviour
     public FoodObject FoodPrefab;
     public WallObject WallPrefab;
     public ExitObject ExitPrefab;
+    public Enemy EnemyPrefab;
     public Sprite[] FoodSprite;
     public int MinFood = 2;
     [Tooltip("음식 최대 수(포함)")]
@@ -65,6 +66,7 @@ public class BoardManager : MonoBehaviour
         AddObject(Instantiate(ExitPrefab), endCoord);
         emptyCellList.Remove(endCoord);
 
+        GenerateEnemy();
         GenerateWall();
         GenerateFood();
     }
@@ -159,5 +161,15 @@ public class BoardManager : MonoBehaviour
             WallObject newWall = Instantiate(WallPrefab);
             AddObject(newWall, coord);
         }
+    }
+
+    void GenerateEnemy()
+    {
+        int randomIndex = Random.Range(0, emptyCellList.Count);
+        Vector2Int coord = emptyCellList[randomIndex];
+
+        emptyCellList.RemoveAt(randomIndex);
+        Enemy newEnemy = Instantiate(EnemyPrefab);
+        AddObject(newEnemy, coord);
     }
 }
