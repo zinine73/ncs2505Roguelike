@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     Vector2Int cellPosition;
     Vector3 moveTarget;
     Animator anim;
+    SpriteRenderer sr; // 왼쪽 이동/공격 모션을 위해 추가
     bool isGameOver;
     bool isMoving;
     float moveSpeed = 3.0f;
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     public void Init()
@@ -48,6 +50,8 @@ public class PlayerController : MonoBehaviour
     public void GameOver()
     {
         isGameOver = true;
+        // 게임오버시 플레이어 행동 멈추기
+        anim.enabled = false;
     }
 
     void Update()
@@ -78,11 +82,13 @@ public class PlayerController : MonoBehaviour
         {
             newCellTarget.x++;
             hasMoved = true;
+            sr.flipX = false; // 오른쪽 보기
         }
         else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
             newCellTarget.x--;
             hasMoved = true;
+            sr.flipX = true; // 왼쪽 보기
         }
 
         if (isMoving)
