@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     readonly int hashMove = Animator.StringToHash("MOVING");
     readonly int hashAttack = Animator.StringToHash("ATTACK");
+    readonly int hashDamage = Animator.StringToHash("DAMAGE"); 
     BoardManager board;
     Vector2Int cellPosition;
     Vector3 moveTarget;
@@ -14,8 +15,10 @@ public class PlayerController : MonoBehaviour
     bool isMoving;
     float moveSpeed = 3.0f;
 
+    public bool Lock { get; set; }
     public Vector2Int Cell => cellPosition;
-    
+    public void GetDamage() => anim.SetTrigger(hashDamage);    
+
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -25,6 +28,8 @@ public class PlayerController : MonoBehaviour
     public void Init()
     {
         isGameOver = false;
+        anim.enabled = true;
+        Lock = false;
     }
 
     public void Spawn(BoardManager boardManager, Vector2Int cell)
@@ -58,6 +63,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (Lock) return;
+        
         if (isGameOver)
         {
             if (Keyboard.current.enterKey.wasPressedThisFrame)
@@ -116,7 +123,6 @@ public class PlayerController : MonoBehaviour
                 = board.GetCellData(newCellTarget);
             if (cellData != null && cellData.Passable)
             {
-                GameManager.Instance.TurnManager.Tick();
                 if (cellData.ContainedObject == null)
                 {
                     MoveTo(newCellTarget, false);
@@ -133,6 +139,7 @@ public class PlayerController : MonoBehaviour
                         anim.SetTrigger(hashAttack);
                     }
                 }
+                GameManager.Instance.TurnManager.Tick();
             }
         }
     }
