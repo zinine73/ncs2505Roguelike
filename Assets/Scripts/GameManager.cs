@@ -14,7 +14,8 @@ public class GameManager : MonoBehaviour
     Label foodLabel;
     int foodAmount = 20;
     int currentLevel = 0;
-
+    public int CurrentLevel => currentLevel;
+    
     void Awake()
     {
         if (Instance != null)

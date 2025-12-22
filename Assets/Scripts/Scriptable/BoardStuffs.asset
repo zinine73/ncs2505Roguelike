@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 237acff291d68c04bab65122f415f952, type: 3}
+  m_Name: BoardStuffs
+  m_EditorClassIdentifier: 
+  boardStuffs:
+  - width: 8
+    height: 8
+    walls: 2
+    minFood: 1
+    maxFood: 3
+    enemies:
+    - {fileID: 5101228663325958158, guid: 033b259d20dd22b4f8ffd972998dfabc, type: 3}
+  - width: 9
+    height: 9
+    walls: 5
+    minFood: 3
+    maxFood: 4
+    enemies:
+    - {fileID: 6010135311431820567, guid: 0f1abbd18f00fbe4695f6470b664e4ea, type: 3}
+  - width: 15
+    height: 15
+    walls: 20
+    minFood: 5
+    maxFood: 6
+    enemies:
+    - {fileID: 5101228663325958158, guid: 033b259d20dd22b4f8ffd972998dfabc, type: 3}
+    - {fileID: 6010135311431820567, guid: 0f1abbd18f00fbe4695f6470b664e4ea, type: 3}

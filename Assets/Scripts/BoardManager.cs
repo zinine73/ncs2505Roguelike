@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -26,7 +27,10 @@ public class BoardManager : MonoBehaviour
     public int MinFood = 2;
     [Tooltip("음식 최대 수(포함)")]
     public int MaxFood = 5;
+    public BoardSO boardSO;
 
+    int minWall = 1;
+    int maxWall = 3;
     Tilemap tilemap;
     CellData[,] boardData;
     Grid grid;
@@ -34,6 +38,24 @@ public class BoardManager : MonoBehaviour
     
     public void Init()
     {
+        int level = GameManager.Instance.CurrentLevel;
+        if (level > 2) level = 2;
+        BoardSO.BoardStuff boardStuffData = boardSO.boardStuffs[level];
+        Width = boardStuffData.width;
+        Height = boardStuffData.height;
+        MinFood = boardStuffData.minFood;
+        MaxFood = boardStuffData.maxFood;
+        minWall = boardStuffData.walls - 1;
+        maxWall = boardStuffData.walls + 2;
+        EnemyPrefab = boardStuffData.enemies;
+
+        /*Width = level + 7;
+        Height = level + 7;
+        minWall = level + 1;
+        maxWall = level + 3;
+        MinFood = level + 1;
+        MaxFood = level + 2;*/
+
         tilemap = GetComponentInChildren<Tilemap>();
         grid = GetComponentInChildren<Grid>();
         emptyCellList = new List<Vector2Int>();
@@ -151,7 +173,7 @@ public class BoardManager : MonoBehaviour
 
     void GenerateWall()
     {
-        int wallCount = Random.Range(6, 10);
+        int wallCount = Random.Range(minWall, maxWall);
         for (int i = 0; i < wallCount; i++)
         {
             int randomIndex = Random.Range(0, emptyCellList.Count);
