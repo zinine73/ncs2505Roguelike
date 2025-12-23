@@ -100,6 +100,11 @@ public class PlayerController : MonoBehaviour
             sr.flipX = true; // 왼쪽 보기
         }
 
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            hasMoved = true;  
+        }
+
         if (isMoving)
         {
             transform.position = Vector3.MoveTowards(
